@@ -7,13 +7,13 @@ import { CookiesProvider } from 'react-cookie'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+
     <CookiesProvider defaultSetOptions={{ path: '/' }} >
       <ContextWraper >
         <App />
       </ContextWraper>
     </CookiesProvider>
-  </React.StrictMode>
+  
 );
 
 reportWebVitals();

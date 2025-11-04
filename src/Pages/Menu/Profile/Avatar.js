@@ -7,6 +7,7 @@ export default function Avatar(){
   const api_url = process.env.REACT_APP_API_URL
   const [ , setCookies ] = useCookies()
   const data = useParsedCookie()
+  const defaultAvatar = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   
   
   async function UpdateAvatar(e){
@@ -37,7 +38,9 @@ export default function Avatar(){
       <div>
         <input onChange={UpdateAvatar} className="h-0 w-0 opacity-0" type="file" id="avatar"/>
         <label className="h-[150px] w-[150px] rounded-full block relative rounded-full border-2 hover:border-amber-100" htmlFor="avatar">
-          <img className="h-full w-full object-cover rounded-full" src={data.avatar.url} alt="avatar"/>
+          <img className="h-full w-full object-cover rounded-full" 
+          src={data.avatar.url ? data.avatar.url : defaultAvatar } 
+          alt="avatar"/>
           <div className="absolute bottom-1 right-1 h-8 w-8 bg-black border-2 rounded-full flex justify-center items-center"><i className="fa-solid fa-camera"></i></div>
         </label>
       </div>

@@ -1,41 +1,28 @@
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import Message from "./Message.js"
+import { socket } from "../../socket.js"
 
 
-export default function Messages(){
+export default function Messages({ messages, my_id, avatar }){
   const MessagesEl = useRef(null)
   
+  
   useEffect(()=>{
-    console.log(MessagesEl)
     MessagesEl.current.scrollTop = MessagesEl.current.scrollHeight
-  },[])
+  },[messages])
   
   return(
-    <div ref={MessagesEl} className="h-full grid gap-3 p-3 grow-0 overflow-scroll">
+    <div ref={MessagesEl} className="h-full p-3 grow-0 overflow-scroll">
       
-      <Message message="Hi" user={true} />
-      <Message message="Hello How are you ?"  />
-      <Message user={true} message="I am fine and you?"  />
-      <Message message="Yeah oky bye.. by the way What is your name." />
-      <Message message="Yeah oky bye.. by the way What is your name." />
       
-      <Message message="Hi" user={true} />
-      <Message message="Hello How are you ?"  />
-      <Message user={true} message="I am fine and you?"  />
-      <Message message="Yeah oky bye.. by the way What is your name." />
-      <Message message="Yeah oky bye.. by the way What is your name." />
+      {
+        messages.map((msg)=>{
+          return(
+          <Message message={msg.text} user={ msg.sender === my_id } avatar={avatar} />
+          )
+        })
+      }
       
-      <Message message="Hi" user={true} />
-      <Message message="Hello How are you ?"  />
-      <Message user={true} message="I am fine and you?"  />
-      <Message message="Yeah oky bye.. by the way What is your name." />
-      <Message message="Yeah oky bye.. by the way What is your name." />
-      
-      <Message message="Hi" user={true} />
-      <Message message="Hello How are you ?"  />
-      <Message user={true} message="I am fine and you?"  />
-      <Message message="Yeah oky bye.. by the way What is your name." />
-      <Message message="Yeah oky bye.. by the way What is your name." />
       
     </div>
     )

@@ -7,6 +7,7 @@ export default function ChatList(){
   const api = process.env.REACT_APP_API_URL
   const data = useParsedCookie()
   const [ chats, setChats ] = useState([])
+  const defaultAvatar = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
   
   useEffect(()=>{
    async function GetChats(){
@@ -39,11 +40,13 @@ export default function ChatList(){
       
       {
         chats.map((chat)=>{
+        console.log(chat)
           return(
           <Persone 
-            image={chat.user_avatar}
+            image={chat.user_avatar ? chat.user_avatar : defaultAvatar}
             seen={true}
             name={chat.user_name}
+            chat={chat}
             last_message="You: Hi - 5:16 PM" />
           )
         })

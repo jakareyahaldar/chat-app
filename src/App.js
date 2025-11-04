@@ -7,8 +7,14 @@ import PrivetComponent from "./Pages/PrivetComponent.js"
 import Users from "./Pages/Users/Users.js"
 import Menu from "./Pages/Menu/Menu.js"
 import Profile from "./Pages/Menu/Profile/Profile.js"
+import { socket } from "./socket.js"
 
 export default function App(){
+  
+  socket.on("connect",()=>{
+    console.log("connected")
+  })
+  
   return (
     <div className="h-screen md:w-[500px] md:mx-auto bg-black text-white">
       <BrowserRouter>

@@ -594,6 +594,11 @@ video {
   margin-right: auto;
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 .ml-auto {
   margin-left: auto;
 }
@@ -667,14 +672,6 @@ video {
   height: 100vh;
 }
 
-.max-h-dvh {
-  max-height: 100dvh;
-}
-
-.min-h-screen {
-  min-height: 100vh;
-}
-
 .w-0 {
   width: 0px;
 }
@@ -746,6 +743,10 @@ video {
 
 .flex-col {
   flex-direction: column;
+}
+
+.items-start {
+  align-items: flex-start;
 }
 
 .items-end {
@@ -869,6 +870,11 @@ video {
   background-color: transparent;
 }
 
+.bg-\[\#5b9c94\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(91 156 148 / var(--tw-bg-opacity, 1));
+}
+
 .object-cover {
   object-fit: cover;
 }
@@ -918,6 +924,10 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .text-2xl {

@@ -40,7 +40,7 @@ export default function Users(){
             userList.map((user)=>{
               return(
               <User 
-                avatar={user.avatar}
+                avatar={user.avatar ? user.avatar : defaultAvatar.url}
                 name={user.name}
                 _id= {user._id}
               />
