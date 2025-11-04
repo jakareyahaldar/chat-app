@@ -3,6 +3,7 @@ import TopBar from "../../CastomElements/TopBar.js"
 import { useEffect, useState } from "react"
 
 export default function Users(){
+  const api = process.env.REACT_APP_API_URL
   const defaultAvatar = {url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"}
   const [ userList, setUsers ] = useState([])
   
@@ -10,7 +11,7 @@ export default function Users(){
    
    async function GetUsers(){
      try{
-       const request = await fetch("http://localhost:7000/users")
+       const request = await fetch(api+"/users")
        const {users} = await request.json()
        if(users){
          setUsers(users)
