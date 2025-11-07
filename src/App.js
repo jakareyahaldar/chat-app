@@ -25,6 +25,9 @@ export default function App(){
   
   useEffect(()=>{
     
+    // connect Web socket
+    socket.on("connect",()=>{})
+    
     // inside the if block of code run when Loged in user
     if(my_Id){
       
@@ -33,8 +36,7 @@ export default function App(){
         dispatch(GetChatList(my_Id))
       }
       
-      // connect Web socket
-      socket.on("connect",()=>{})
+      
       
       // handle Got new message
       socket.on("new_message",(message)=>{
