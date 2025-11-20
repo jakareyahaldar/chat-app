@@ -1,9 +1,11 @@
 import { createPortal } from 'react-dom';
 
 export default function LogoutAlert({ 
-  onClose,onConfrom,show,fixed
+  title,text,onClose,onConfrom,show,fixed,yes_btn_text,no_btn_text
 }){
   
+  const confromButtne = yes_btn_text || "Yes"
+  const cancelButton = no_btn_text || "No"
   
   if(!show){
     return null
@@ -16,11 +18,11 @@ export default function LogoutAlert({
     <div className={tailwind}>
       
       <div className="text-white mx-auto custom-ui w-[80%] max-w-[400px] p-5 flex flex-col gap-2 bg-[#142121] rounded-xl shadow-md">
-        <h4 className="text-2xl font-bold">Logout?</h4>
-        <p>Are you sure you want to log out ?</p>
+        <h4 className="text-2xl font-bold">{title}</h4>
+        <p>{text}</p>
         <div className="flex justify-between mt-3">
-          <button onClick={onConfrom} className="py- px-7 rounded-md bg-[#2f5454]" >Yes</button>
-          <button onClick={onClose} className="py-1 px-7 rounded-md bg-[#7f65c4]" >No</button>
+          <button onClick={onConfrom} className="py- px-7 rounded-md bg-[#2f5454]" >{confromButtne}</button>
+          <button onClick={onClose} className="py-1 px-7 rounded-md bg-[#7f65c4]" >{cancelButton}</button>
         </div>
       </div>
       
@@ -32,11 +34,11 @@ export default function LogoutAlert({
       <div className={tailwind}>
       
       <div className="text-white mx-auto custom-ui w-[80%] max-w-[400px] p-5 flex flex-col gap-2 bg-[#142121] rounded-xl shadow-md">
-        <h4 className="text-2xl font-bold">Logout?</h4>
-        <p>Are you sure you want to log out ?</p>
+        <h4 className="text-2xl font-bold">{title}</h4>
+        <p>{text}</p>
         <div className="flex justify-between mt-3">
-          <button onClick={onConfrom} className="py- px-7 rounded-md bg-[#2f5454]" >Yes</button>
-          <button onClick={onClose} className="py-1 px-7 rounded-md bg-[#7f65c4]" >No</button>
+          <button onClick={onConfrom} className="py- px-7 rounded-md bg-[#2f5454]" >{confromButtne}</button>
+          <button onClick={onClose} className="py-1 px-7 rounded-md bg-[#7f65c4]" >{cancelButton}</button>
         </div>
       </div>
       

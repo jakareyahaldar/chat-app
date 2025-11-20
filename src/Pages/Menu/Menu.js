@@ -2,7 +2,7 @@ import TopBar from "../../CastomElements/TopBar.js"
 import { useNavigate } from "react-router-dom"
 import useParsedCookie from "../../hooks/useParsedCookie.js"
 import { useState } from "react"
-import LogoutAlert from "../../CastomElements/LogoutAlert.js"
+import LogoutAlert from "../../CastomElements/MyAlert.js"
 import { useCookies } from "react-cookie"
 
 export default function Menu(){
@@ -13,6 +13,8 @@ export default function Menu(){
   
   return(
     <div>
+      
+      {/*Logout Alert*/}
       <LogoutAlert
       show={showLogout}
       onClose={()=>{
@@ -23,9 +25,14 @@ export default function Menu(){
         Navigate("/login")
       }}
       fixed={true}
+      title="Logout?"
+      text="Want Logout ?"
       />
+      
+      {/*Top navigation bar*/}
       <TopBar text="Menu" path="/" />
       
+      {/*menu itemes*/}
       <div className="grid gap-3 p-3">
         
         {/*Profile*/}

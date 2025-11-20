@@ -11,11 +11,11 @@ export default function Messages({ messages, my_id, avatar }){
   
   
   useEffect(()=>{
-    MessagesEl.current.scrollTop = MessagesEl.current.scrollHeight
+    MessagesEl.current.scrollTop = MessagesEl.current.scrollHeight+100
   },[messages])
   
   return(
-    <div ref={MessagesEl} className="h-full p-3 grow-0 overflow-scroll">
+    <div ref={MessagesEl} className="h-full p-3 grow-0 shrink overflow-scroll">
       
       
       {

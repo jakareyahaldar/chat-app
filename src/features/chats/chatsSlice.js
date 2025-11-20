@@ -53,8 +53,19 @@ export const chatsSlice = createSlice({
   extraReducers: (builder)=>{
     builder
       .addCase(GetChatList.fulfilled,(state,action)=>{
-        state.chats = action.payload
         state.isLodding = false
+        const ls = window.localStorage.getItem("jlc")
+        const localChats = ls ? JSON.parse(ls) : []
+        const onlineChats = action.payload
+        
+        if(!localChats.length){
+          window.localStorage.setItem("jlc",JSON.stringify(onlineChats))
+          state.chats = onlineChats
+          return
+        }
+        
+        state.chats = localChats
+        
       })
       .addCase(GetChatList.pending,(state)=>{
         state.isLodding = true

@@ -18,7 +18,7 @@ export default function Inbox(){
   return(
     <div className="flex flex-col h-full">
       <Header name={user_name} avatar={user_avatar} />
-      <Messages avatar={user_avatar} messages={ chat.messages ? chat.messages : [] } my_id={myCookie._id} />
+      <Messages avatar={user_avatar} messages={ chat?.messages ? chat.messages : [] } my_id={myCookie._id} />
       <Footer chat_id={chat_id} members={user_id} my_id={myCookie._id} />
     </div>
     )

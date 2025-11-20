@@ -12,6 +12,7 @@ import { useEffect } from "react"
 import useParsedCookie from "./hooks/useParsedCookie.js"
 import { useSelector, useDispatch } from "react-redux"
 import { GetChatList, pushMessage } from "./features/chats/chatsSlice.js"
+import { socketIoConnected } from "./features/helper/helperSlice.js"
 
 export default function App(){
   const dispatch = useDispatch()
@@ -27,7 +28,10 @@ export default function App(){
     
     // connect Web socket
     socket.on("connect",()=>{
-      console.log("Web socket Connected ✨")
+      dispatch(socketIoConnected(true))
+    })
+    socket.on("disconnect",()=>{
+      dispatch(socketIoConnected(false))
     })
     
     // inside the if block of code run when Loged in user

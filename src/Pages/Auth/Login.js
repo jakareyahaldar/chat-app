@@ -2,7 +2,7 @@ import IconInput from "../../CastomElements/IconInput.js"
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { useCookies } from "react-cookie"
-import LogoutAlert from "../../CastomElements/LogoutAlert.js"
+import LogoutAlert from "../../CastomElements/MyAlert.js"
 
 export default function Login(){
   const api = process.env.REACT_APP_API_URL
@@ -17,6 +17,8 @@ export default function Login(){
   if(cookie){
     return <LogoutAlert 
     show={true}
+    title="Logout?"
+    text="Want Log Out ?"
     onClose={()=>Navigate("/")}
     onConfrom={()=>{
       removeCookie("jessengar_auth")

@@ -2,7 +2,7 @@ import IconInput from "../../CastomElements/IconInput.js"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCookies } from "react-cookie"
-import LogoutAlert from "../../CastomElements/LogoutAlert.js"
+import LogoutAlert from "../../CastomElements/MyAlert.js"
 
 export default function Signup(){
   const Navigate = useNavigate()
@@ -23,6 +23,8 @@ export default function Signup(){
     }}
     show={true}
     fixed={false}
+    title="Logout?"
+    text="Want Log Out?"
     />
   }
   

@@ -1,8 +1,11 @@
 import { socket } from "../../../socket.js"
-import { useState } from "react"
+import { useState, useRef } from "react"
+import { useSelector } from "react-redux"
 
 export default function Footer({ chat_id, members, my_id }){
-  
+  const InputEl = useRef({})
+  const helper = useSelector((state)=> state.helper)
+  console.log(helper)
   const messageTemplate = {
     message_id: window.crypto.randomUUID(),
     sender: my_id,
@@ -15,6 +18,11 @@ export default function Footer({ chat_id, members, my_id }){
   
   
   function sendMessage(){
+    InputEl.current.focus()
+    if(!helper.socketIo_connected){
+      alert("Cant Send message!")
+      return
+    }
     socket.emit("user_message",{ ...message, atSend:Date.now() })
     setMessage(messageTemplate)
   }
@@ -30,11 +38,13 @@ export default function Footer({ chat_id, members, my_id }){
       </div>
       {/*Type message*/}
       <div className="flex gap-3">
-        <input 
+        <input
+        ref={InputEl}
         value={message.text}
         onChange={(e)=>{
           setMessage((prev)=>({...prev, text: e.target.value}))
-        }} className="bg-[#192a2a] rounded-2xl px-3 py-1 outline-none" type="text" placeholder="Message" />
+        }} className="bg-[#192a2a] rounded-2xl px-3 py-1 outline-none" 
+        type="text" placeholder="Message" />
         <i onClick={sendMessage} className="text-2xl fa fa-paper-plane" aria-hidden="true"></i>
       </div>
     </div>
