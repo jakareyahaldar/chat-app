@@ -8,7 +8,7 @@ import Users from "./Pages/Users/Users.js"
 import Menu from "./Pages/Menu/Menu.js"
 import Profile from "./Pages/Menu/Profile/Profile.js"
 import { socket } from "./socket.js"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import useParsedCookie from "./hooks/useParsedCookie.js"
 import { useSelector, useDispatch } from "react-redux"
 import { GetChatList, pushMessage, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
@@ -16,7 +16,6 @@ import { socketIoConnected } from "./features/helper/helperSlice.js"
 
 export default function App(){
   const dispatch = useDispatch()
-  const [firstRender,setFirstRender] = useState(false)
   
   const myCookie = useParsedCookie()
   const my_Id = myCookie?._id
@@ -29,7 +28,7 @@ export default function App(){
       // Getting all chats
         dispatch(GetChatList(my_Id))
     }
-  },[want_reload])
+  },[want_reload,my_Id,dispatch])
   
   
   
@@ -63,7 +62,7 @@ export default function App(){
       
       
     } // end if(my_Id)
-  },[])
+  },[my_Id,dispatch])
   
   return (
     <div className="h-dvh md:w-[500px] md:mx-auto bg-black text-white">

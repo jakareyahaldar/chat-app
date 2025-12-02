@@ -1,14 +1,10 @@
 import { useRef, useEffect } from "react"
 import Message from "./Message.js"
-import { messageSeen } from "../../features/chats/chatsSlice.js"
-import { useDispatch } from "react-redux"
 import { socket } from "../../socket.js"
 
 
-export default function Messages({ messages, my_id, avatar }){
+export default function Messages({ messages, my_id, avatar, setSelectedMessages }){
   const MessagesEl = useRef(null)
-  const dispatch = useDispatch()
-  
   
   
   useEffect(()=>{
@@ -32,7 +28,7 @@ export default function Messages({ messages, my_id, avatar }){
         const isLastMessage = i === (arr.length-1)
         
           return(
-          <Message message={msg} userId={ my_id } avatar={avatar} isLastMessage={isLastMessage} />
+          <Message message={msg} userId={ my_id } avatar={avatar} isLastMessage={isLastMessage} setSelectedMessages={setSelectedMessages} />
           )
         })
       }

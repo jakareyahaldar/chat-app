@@ -1,12 +1,8 @@
 import Persone from "./Persone.js"
 import { useSelector } from "react-redux"
-import useParsedCookie from "../../hooks/useParsedCookie.js"
 
 export default function ChatList(){
   const defaultAvatar = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRe7aH70ubSk8FPfa1NLXvIP_wWOVbueWEQkA&usqp=CAU"
-  
-  const myCookie = useParsedCookie()
-  const my_id = myCookie?._id
   
   
   const chatsList = useSelector((state)=> state.chats )
