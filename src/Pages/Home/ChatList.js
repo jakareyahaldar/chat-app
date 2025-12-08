@@ -17,7 +17,6 @@ export default function ChatList(){
       
       const chatName = chat.chat_id
       const lastMessage = chat.messages?.length ? chat.messages[chat.messages.length-1] : {}
-      console.log(chat)
       LastMessageObj[chatName] = lastMessage
        
     }
@@ -25,7 +24,6 @@ export default function ChatList(){
   }
   
   const MyLastMessages = ExtractLastMessage(chats)
-  console.log(MyLastMessages)
   
   
   let alert_message = ""

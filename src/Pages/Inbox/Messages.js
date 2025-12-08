@@ -3,16 +3,17 @@ import Message from "./Message.js"
 import { socket } from "../../socket.js"
 
 
-export default function Messages({ messages, my_id, avatar, setSelectedMessages }){
+export default function Messages({ messages, my_id, avatar, setSelectedMessages, BottomPaddState }){
   const MessagesEl = useRef(null)
   
-  
+  const [messagesBottomPadding] = BottomPaddState
   useEffect(()=>{
+    MessagesEl.current.style.paddingBottom = messagesBottomPadding
     MessagesEl.current.scrollTop = MessagesEl.current.scrollHeight+100
-  },[messages])
+  },[messages,messagesBottomPadding])
   
   return(
-    <div ref={MessagesEl} className=" h-full p-3 grow-0 shrink overflow-y-scroll overflow-x-hidden">
+    <div ref={MessagesEl} className=" h-full p-3 pb-10 grow-0 shrink overflow-y-scroll overflow-x-hidden">
       
       
       {

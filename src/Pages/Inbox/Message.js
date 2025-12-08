@@ -21,14 +21,18 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
 //     }).join(" ")
 //     return brokeLongWord
 //   }
-  
+
+const replyMessage = message.replyMessage
   return(
     <div onDoubleClick={()=>setSelectedMessages(message)} className={`my-3 px-3 flex gap-3 items-end relative`}>
         {
           !isUser && <img className="shrink-0 h-[30px] w-[30px] rounded-full object-cover" src={avatar ? avatar : defaultAvatar} alt="."/>
         }
         <div className={`${isUser ? "ml-auto" : ""} h-fit p-2 rounded-2xl bg-[#172828]`}>
-          <p className="max-w-[280px] break-words" >{message.text}</p>
+          <p className="max-w-[280px] break-words" >
+            <span className="block text-sm text-[#a69696]">{replyMessage?.text}</span>
+            <span>{message.text}</span>
+          </p>
         </div>
         {isUser && isLastMessage && message.seen && <img className="h-[20px] w-[20px] rounded-full inline-block absolute -bottom-6 right-2" src={avatar ? avatar : defaultAvatar}  alt="."/>}
       </div>

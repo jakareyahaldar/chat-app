@@ -10,7 +10,7 @@ export default function Inbox(){
   
   const myCookie = useParsedCookie()
   const [ selectedMessages, setSelectedMessages ] = useState(null)
-  console.log(selectedMessages)
+  const [messagesBottomPadding,setBottomPadding] = useState("10px")
   const location = useLocation()
   const { user_name, user_avatar, chat_id, user_id } = location?.state?.chat || {}
   
@@ -20,8 +20,8 @@ export default function Inbox(){
   return(
     <div className="flex flex-col h-full">
       <Header name={user_name} avatar={user_avatar} />
-      <Messages avatar={user_avatar} messages={ chat?.messages ? chat.messages : [] } my_id={myCookie._id} setSelectedMessages={setSelectedMessages} />
-      <Footer chat_id={chat_id} members={user_id} my_id={myCookie._id} selectedMessagesState={[selectedMessages,setSelectedMessages]} />
+      <Messages avatar={user_avatar} messages={ chat?.messages ? chat.messages : [] } my_id={myCookie._id} setSelectedMessages={setSelectedMessages} BottomPaddState={[messagesBottomPadding,setBottomPadding]} />
+      <Footer chat_id={chat_id} members={user_id} my_id={myCookie._id} selectedMessagesState={[selectedMessages,setSelectedMessages]} BottomPaddState={[messagesBottomPadding,setBottomPadding]} />
     </div>
     )
 }

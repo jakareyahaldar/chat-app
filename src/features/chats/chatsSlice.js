@@ -4,11 +4,9 @@ const api = process.env.REACT_APP_API_URL
 
 // Get chats from database function
 export const GetChatList = createAsyncThunk("chats/GetChatList", async (_id)=>{
-  console.log("GetChatList")
   try{
        let res = await fetch(api+"/message/chat/"+_id)
        res = await res.json()
-       console.log({main:res.chats})
        return res.chats
      }catch(err){
        console.log(err)
@@ -34,7 +32,6 @@ function margeChats(localChat=[],onlineChat=[]){
       messages: [ ...localMessage, ...onlineMessage  ]
     }
   })
-  console.log({marged})
   return marged
 }
 
