@@ -3,7 +3,7 @@ import Message from "./Message.js"
 import { socket } from "../../socket.js"
 
 
-export default function Messages({ messages, my_id, avatar, setSelectedMessages, BottomPaddState }){
+export default function Messages({ messages, my_id, avatar, isTyping, setSelectedMessages, BottomPaddState }){
   const MessagesEl = useRef(null)
   
   const [messagesBottomPadding] = BottomPaddState
@@ -34,7 +34,7 @@ export default function Messages({ messages, my_id, avatar, setSelectedMessages,
         })
       }
       
-      
+      {isTyping && <p>Typing..</p>}
     </div>
     )
 }

@@ -75,6 +75,16 @@ export const chatsSlice = createSlice({
         
       })
     },
+    setTypingState: (state,action)=>{
+      const originalState = current(state)
+      state.chats = originalState.chats.map((c)=>{
+        const match = c.chat_id === action.payload.chat_id
+        if(match){
+          return {...c,typing:action.payload.typing}
+        }
+        return c
+      })
+    },
     saveChats: (state)=>{
       window.localStorage.setItem("jlc",JSON.stringify(state.chats))
     },
@@ -113,5 +123,5 @@ export const chatsSlice = createSlice({
   }
 })
 
-export const { pushMessage, messageSeen, saveChats, clean, want_reload } = chatsSlice.actions
+export const { pushMessage, messageSeen, setTypingState, saveChats, clean, want_reload } = chatsSlice.actions
 export default chatsSlice.reducer

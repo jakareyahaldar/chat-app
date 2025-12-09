@@ -11,7 +11,7 @@ import { socket } from "./socket.js"
 import { useEffect, useState } from "react"
 import useParsedCookie from "./hooks/useParsedCookie.js"
 import { useSelector, useDispatch } from "react-redux"
-import { GetChatList, pushMessage, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
+import { GetChatList, pushMessage, setTypingState, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
 import { socketIoConnected } from "./features/helper/helperSlice.js"
 import MyAlert from "./CastomElements/MyAlert.js"
 
@@ -37,9 +37,11 @@ export default function App(){
     
     // connect Web socket
     socket.on("connect",()=>{
+      console.log("Connected")
       dispatch(socketIoConnected(true))
     })
     socket.on("disconnect",()=>{
+      console.log("disconnected")
       dispatch(socketIoConnected(false))
     })
     
@@ -60,6 +62,14 @@ export default function App(){
       socket.on("seen_response",(data)=>{
         dispatch(messageSeen(data))
       })
+      socket.on("typing_res",(data)=>{
+        // Check its for you or not
+        const isForMe = data.receiver === my_Id
+        if(isForMe){
+          dispatch(setTypingState(data))
+        }
+      })
+      
       
       // WAIT ALERT CONFIGARATION SETTIMEOUT
       var tt = setTimeout(()=>{

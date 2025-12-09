@@ -5,7 +5,6 @@ import MyAlert from "../../../CastomElements/MyAlert.js"
 //import { saveChats } from "../../../features/chats/chatsSlice.js"
 
 export default function Footer({ chat_id, members, my_id, selectedMessagesState, BottomPaddState }){
-  
   // Ref Elements
   const InputEl = useRef({})
   const replyBox = useRef({clientHeight:10})
@@ -16,6 +15,8 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
   const [showAlert,setShowAlert] = useState(false)
   const [messagesBottomPadding,setMessageBottomPadd] = BottomPaddState
   const [selectedMessage, setSelectedMessage] = selectedMessagesState
+  
+  // message template
   const messageTemplate = {
     message_id: window.crypto.randomUUID(),
     sender: my_id,
@@ -24,38 +25,60 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
     text:"",
     seen:false
   }
-  const [ message,setMessage ] = useState(messageTemplate)
+  const [ message,setMessage ] = useState(messageTemplate) // message state
+  const [isTyping,setIsTyping] = useState(false) // typing status truck
+  const [TimeoutId,setTId] = useState(null) // For tracking Typing end Event
+  
+  
+  // Send Typing status on other side
+  useEffect(()=>{
+    if(TimeoutId){
+      socket.emit("typing",{
+        typing: isTyping,
+        chat_id,
+        sender: my_id,
+        receiver: members,
+      })
+    }
+  },[isTyping])
   
   useEffect(()=>{
+    // This code using for adjust Reply text width
     if(replyPragraph.current.style){
       replyPragraph.current.style.width = Math.floor(footerContainar.current.clientWidth / 1.5) + "px"
     }
   },[])
   
   useEffect(()=>{
+    // This code using for adjust padding on messages list when select a reply message
     const ReplyMsgBoxHeight = replyBox?.current?.clientHeight
     setMessageBottomPadd( (ReplyMsgBoxHeight || 0 ) + 10 + "px")
   },[messagesBottomPadding,selectedMessage])
   
+  
+  // Sending Message
   function sendMessage(){
+    // if server not connected give an alert
     if(!helper.socketIo_connected){
       setShowAlert(true)
       return
     }
+    // if text is empty cant send sms
     if(message.text === "") return
+    // send via socketio emit
     socket.emit("user_message",{ ...message, atSend:Date.now(), replyMessage: selectedMessage })
-    setMessage(messageTemplate)
-    setSelectedMessage(null)
-    InputEl.current.focus()
-    InputEl.current.style.height = "40px"
+    // nessesary work
+    setMessage(messageTemplate) // set default message
+    setSelectedMessage(null) //clear selected reply message
+    InputEl.current.focus() // focas on input bar
+    InputEl.current.style.height = "40px" // go default heaight of input 
   }
 
-  
   
   return(
     <>
       
-      {/*Alert*/}
+      {/*Alert Server Disconnected*/}
       <MyAlert 
         title="Error!"
         text="Server Disconnected"
@@ -102,7 +125,16 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
         value={message.text}
         rows="1"
         onChange={(e)=>{
+          // Typing State set
+          setIsTyping(true)
+          clearInterval(TimeoutId)
+          setTId(setTimeout(()=>{
+            setIsTyping(false)
+          },5000))
+          
+          // set textarea height
           e.target.style.height = e.target.scrollHeight + "px";
+          // Set message
           setMessage((prev)=>({...prev, text: e.target.value}))
         }} className="bg-[#192a2a] rounded-2xl px-3 py-2 py-1 outline-none" 
         type="text" placeholder="Message"></textarea>

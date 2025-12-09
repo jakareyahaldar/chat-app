@@ -16,11 +16,12 @@ export default function Inbox(){
   
   const allChats = useSelector((state)=> state.chats.chats )
   const [ chat ] = allChats.filter((chat)=> chat.chat_id === chat_id )
+  console.log(chat)
   
   return(
     <div className="flex flex-col h-full">
       <Header name={user_name} avatar={user_avatar} />
-      <Messages avatar={user_avatar} messages={ chat?.messages ? chat.messages : [] } my_id={myCookie._id} setSelectedMessages={setSelectedMessages} BottomPaddState={[messagesBottomPadding,setBottomPadding]} />
+      <Messages avatar={user_avatar} isTyping={chat.typing} messages={ chat?.messages ? chat.messages : [] } my_id={myCookie._id} setSelectedMessages={setSelectedMessages} BottomPaddState={[messagesBottomPadding,setBottomPadding]} />
       <Footer chat_id={chat_id} members={user_id} my_id={myCookie._id} selectedMessagesState={[selectedMessages,setSelectedMessages]} BottomPaddState={[messagesBottomPadding,setBottomPadding]} />
     </div>
     )
