@@ -65,6 +65,8 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
     }
     // if text is empty cant send sms
     if(message.text === "") return
+    
+    setIsTyping(false)
     // send via socketio emit
     socket.emit("user_message",{ ...message, atSend:Date.now(), replyMessage: selectedMessage })
     // nessesary work
