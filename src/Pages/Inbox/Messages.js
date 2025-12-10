@@ -34,7 +34,15 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
         })
       }
       
-      {isTyping && <p>Typing..</p>}
+      
+      {
+        isTyping && (
+        <div className="flex gap-3 items-center">
+          <img className="shrink-0 h-[30px] w-[30px] rounded-full object-cover" src={avatar} alt="." />
+          <p>Typing...</p>
+        </div>)
+      }
+      
     </div>
     )
 }
