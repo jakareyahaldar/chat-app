@@ -2,6 +2,7 @@ import { socket } from "../../../socket.js"
 import { useState, useRef, useEffect } from "react"
 import { useSelector } from "react-redux"
 import MyAlert from "../../../CastomElements/MyAlert.js"
+import EmojiBox from "../../../CastomElements/EmojiBox.js"
 //import { saveChats } from "../../../features/chats/chatsSlice.js"
 
 export default function Footer({ chat_id, members, my_id, selectedMessagesState, BottomPaddState }){
@@ -15,6 +16,7 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
   const [showAlert,setShowAlert] = useState(false)
   const [messagesBottomPadding,setMessageBottomPadd] = BottomPaddState
   const [selectedMessage, setSelectedMessage] = selectedMessagesState
+  const [emojiOpen,setEmojiOpen] = useState(false)
   
   // message template
   const messageTemplate = {
@@ -79,7 +81,10 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
   
   return(
     <>
-      
+      <EmojiBox 
+        setEmoji={(code)=>setMessage((prev)=>({...prev,text: prev.text + String.fromCodePoint(code)}))} 
+        isOpen={emojiOpen}
+      />
       {/*Alert Server Disconnected*/}
       <MyAlert 
         title="Error!"
@@ -95,9 +100,10 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
       {/*Main Jsx*/}
       <div ref={footerContainar} className="w-full shrink-0 flex items-center justify-between p-3 px-5 relative">
       {/*Options*/}
-      <div className="text-2xl flex gap-3">
+      <div className="text-2xl flex gap-2">
         <i className="fa-solid fa-image"></i>
-        <i className="fa-solid fa-microphone"></i>
+        <i  className="fa-solid fa-microphone"></i>
+        <i onClick={()=>setEmojiOpen(!emojiOpen)} className="fas fa-grin"></i>
       </div>
       {/*Reply selected Messages*/}
       {
@@ -117,6 +123,8 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
       <div className="flex gap-3">
         <textarea
         ref={InputEl}
+        value={message.text}
+        rows="1"
         onKeyDown={(e)=>{
           const enter = e.key === "Enter"
           if(enter){
@@ -124,8 +132,6 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
             e.preventDefault()
           }
         }}
-        value={message.text}
-        rows="1"
         onChange={(e)=>{
           // Typing State set
           setIsTyping(true)
@@ -140,6 +146,7 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
           setMessage((prev)=>({...prev, text: e.target.value}))
         }} className="bg-[#192a2a] rounded-2xl px-3 py-2 py-1 outline-none" 
         type="text" placeholder="Message"></textarea>
+        
         <button type="submit">
           <i onClick={sendMessage} className="text-2xl fa fa-paper-plane" aria-hidden="true"></i>
         </button>

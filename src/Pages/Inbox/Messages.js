@@ -13,7 +13,9 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
   },[messages,messagesBottomPadding])
   
   return(
-    <div ref={MessagesEl} className=" h-full p-3 pb-10 grow-0 shrink overflow-y-scroll overflow-x-hidden">
+    <>
+      
+      <div ref={MessagesEl} className=" h-full p-3 pb-10 grow-0 shrink overflow-y-scroll overflow-x-hidden">
       
       
       {
@@ -44,5 +46,6 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
       }
       
     </div>
+    </>
     )
 }
