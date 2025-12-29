@@ -11,7 +11,7 @@ import { socket } from "./socket.js"
 import { useEffect, useState } from "react"
 import useParsedCookie from "./hooks/useParsedCookie.js"
 import { useSelector, useDispatch } from "react-redux"
-import { GetChatList, pushMessage, handleReact, setTypingState, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
+import { GetChatList, pushMessage, handleReact, UndoReact, setTypingState, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
 import { socketIoConnected } from "./features/helper/helperSlice.js"
 import MyAlert from "./CastomElements/MyAlert.js"
 
@@ -71,9 +71,18 @@ export default function App(){
       })
       
       socket.on("react_res",(data)=>{
-        const { message } = data
-        if(message.sender === my_Id || message.receiver_id === my_Id){
+        const { receiver } = data
+        if((receiver?.filter(m=>m.user_id===my_Id)).length){
           dispatch(handleReact(data))
+          dispatch(saveChats())
+        }
+      })
+      
+      socket.on("undo_react",(data)=>{
+        console.log(data)
+        const { receiver } = data
+        if((receiver?.filter(m=>m.user_id===my_Id)).length){
+          dispatch(UndoReact(data))
           dispatch(saveChats())
         }
       })

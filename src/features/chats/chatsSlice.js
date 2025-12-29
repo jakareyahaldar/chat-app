@@ -82,7 +82,6 @@ export const chatsSlice = createSlice({
       const chatIndex = currrentState.chats.findIndex(c=>c.chat_id === message.chat_id)
       const messageIndex = chatIndex >= 0 ? ( currrentState.chats[chatIndex].messages?.findIndex(m=>m.message_id === message.message_id) ) : null
       if( messageIndex === null || messageIndex < 0  ) return
-      
       const haveThisUserReact = currrentState.chats[chatIndex].messages[messageIndex].react.findIndex(re=> re.sender === sender)
       if(haveThisUserReact >= 0){
         state.chats[chatIndex].messages[messageIndex].react.splice(haveThisUserReact,1,{sender,react_code})
@@ -90,6 +89,21 @@ export const chatsSlice = createSlice({
       }
       state.chats[chatIndex].messages[messageIndex].react.push({sender,react_code})
     },
+    
+    UndoReact: (state,action)=>{
+      const { sender, receiver, react_code, message } = action.payload
+      if( !sender || !receiver || !react_code || !message?.message_id ) return
+      const currrentState = current(state)
+      const chatIndex = currrentState.chats.findIndex(c=>c.chat_id === message.chat_id)
+      const messageIndex = chatIndex >= 0 ? ( currrentState.chats[chatIndex].messages?.findIndex(m=>m.message_id === message.message_id) ) : null
+      if( messageIndex === null || messageIndex < 0  ) return
+      const haveThisUserReact = currrentState.chats[chatIndex].messages[messageIndex].react.findIndex(re=> re.sender === sender)
+      if(haveThisUserReact >= 0){
+        state.chats[chatIndex].messages[messageIndex].react.splice(haveThisUserReact,1)
+        return
+      }
+    },
+    
     setTypingState: (state,action)=>{
       const originalState = current(state)
       state.chats = originalState.chats.map((c)=>{
@@ -138,5 +152,5 @@ export const chatsSlice = createSlice({
   }
 })
 
-export const { pushMessage, messageSeen, handleReact, setTypingState, saveChats, clean, want_reload } = chatsSlice.actions
+export const { pushMessage, messageSeen, handleReact, UndoReact, setTypingState, saveChats, clean, want_reload } = chatsSlice.actions
 export default chatsSlice.reducer

@@ -7,7 +7,7 @@ export default function EmojiBox(Props){
   
   
   useEffect(()=>{
-    if(BoxEl.current && x || y){
+    if(BoxEl.current && (x || y)){
       BoxEl.current.style.top = y
       BoxEl.current.style.left = x
     }

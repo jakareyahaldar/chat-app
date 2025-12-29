@@ -4,7 +4,7 @@ import { socket } from "../../socket.js"
 import EmojiBox from "../../CastomElements/EmojiBox.js"
 
 
-export default function Messages({ messages, my_id, avatar, isTyping, setSelectedMessages, BottomPaddState, ReplyBoxState }){
+export default function Messages({ messages, my_id, avatar, isTyping, setSelectedMessages, BottomPaddState, ReplyBoxState, MessageDetailsState }){
   const MessagesEl = useRef(null)
   
   const [messagesBottomPadding] = BottomPaddState
@@ -19,14 +19,14 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
   return(
     <>
       <EmojiBox 
-        isOpen={reactBoxData !== null}
+        isOpen={reactBoxData.show}
         setEmoji={(code)=>{
         const { sender, receiver, message } = reactBoxData
           socket.emit("react",{
             sender,receiver,message,
             react_code: code
           })
-          setReactBoxData(null)
+          setReactBoxData(prev => ({receiver:prev.receiver,show:false}))
         }}
         tailwind="fixed z-[100] fixed"
         x={reactBoxData?.x}
@@ -56,6 +56,7 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
             isLastMessage={isLastMessage} 
             setSelectedMessages={setSelectedMessages} 
             ReplyBoxState={ReplyBoxState}
+            MessageDetailsState={MessageDetailsState}
             />
           )
         })
