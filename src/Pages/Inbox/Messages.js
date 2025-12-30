@@ -31,7 +31,7 @@ export default function Messages({ messages, my_id, avatar, isTyping, setSelecte
         tailwind="fixed z-[100] fixed"
         x={reactBoxData?.x}
         y={reactBoxData?.y}
-        setReactBoxData={setReactBoxData}
+        onClick={()=>setReactBoxData(p=>({...p,show:false}))}
       />
       
       <div ref={MessagesEl} className=" h-full p-3 pb-10 grow-0 shrink overflow-y-scroll overflow-x-hidden">

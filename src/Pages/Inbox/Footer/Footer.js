@@ -84,9 +84,10 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
   return(
     <>
       <EmojiBox 
-        tailwind={"mb-[100px]"}
         setEmoji={(code)=>setMessage((prev)=>({...prev,text: prev.text + String.fromCodePoint(code)}))} 
         isOpen={emojiOpen}
+        tailwind="relative z-[100] mb-[100px]"
+        onClose={()=>setEmojiOpen(false)}
       />
       {/*Alert Server Disconnected*/}
       <MyAlert 
