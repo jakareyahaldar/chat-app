@@ -14,12 +14,14 @@ import { useSelector, useDispatch } from "react-redux"
 import { GetChatList, pushMessage, handleReact, UndoReact, setTypingState, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
 import { socketIoConnected } from "./features/helper/helperSlice.js"
 import MyAlert from "./CastomElements/MyAlert.js"
+import nootifySound from "./utilities/notify.mp3"
 
 export default function App(){
   const dispatch = useDispatch()
   const [ showWaitAlert, setShowWaitAlert ] = useState(false)
   const myCookie = useParsedCookie()
   const my_Id = myCookie?._id
+  const Notify = new Audio(nootifySound)
   
   const chatsList = useSelector((state)=> state.chats )
   const want_reload = chatsList.want_reload
@@ -57,6 +59,9 @@ export default function App(){
         if(!forMe) return
         dispatch(pushMessage(message))
         dispatch(saveChats())
+        if(sender !== my_Id){
+          Notify.play()
+        }
       })
       
       socket.on("seen_response",(data)=>{
@@ -71,10 +76,13 @@ export default function App(){
       })
       
       socket.on("react_res",(data)=>{
-        const { receiver } = data
+        const { receiver, sender } = data
         if((receiver?.filter(m=>m.user_id===my_Id)).length){
           dispatch(handleReact(data))
           dispatch(saveChats())
+        }
+        if(sender !== my_Id){
+          Notify.play()
         }
       })
       
