@@ -36,6 +36,7 @@ function margeChats(localChat = [], onlineChat = []) {
     onlineMessage = onlineMessage.filter((om) => {
       const ishave = localMessage.findIndex(lm => lm.message_id === om.message_id)
       if (ishave === -1) return true
+      return false
     })
     return {
       ...a_on_chat,
