@@ -15,13 +15,13 @@ export default function Message({ userId, message, avatar, isLastMessage, setSel
   }
   async function deleteMessageFromDatabase() {
     const api = process.env.REACT_APP_API_URL
-    try{
-      await fetch(api+"/message/message/",{
+    try {
+      await fetch(api + "/message/message/", {
         method: "delete",
-        headers: {"content-type":"application/json"},
-        body: JSON.stringify({chat_id:message.chat_id,message_id:message.message_id})
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ chat_id: message.chat_id, message_id: message.message_id })
       })
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
