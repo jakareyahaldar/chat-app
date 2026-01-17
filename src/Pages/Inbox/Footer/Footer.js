@@ -3,7 +3,8 @@ import { useState, useRef, useEffect } from "react"
 import { useSelector } from "react-redux"
 import MyAlert from "../../../CastomElements/MyAlert.js"
 import EmojiBox from "../../../CastomElements/EmojiBox.js"
-//import { saveChats } from "../../../features/chats/chatsSlice.js"
+import { saveChats, pushMessage } from "../../../features/chats/chatsSlice.js"
+import { useDispatch } from "react-redux"
 
 export default function Footer({ chat_id, members, my_id, selectedMessagesState, BottomPaddState }){
   // Ref Elements
@@ -11,6 +12,7 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
   const replyBox = useRef({clientHeight:10})
   const footerContainar = useRef({})
   const replyPragraph = useRef({})
+  const dispatch = useDispatch()
   
   const helper = useSelector((state)=> state.helper)
   const [showAlert,setShowAlert] = useState(false)
@@ -73,6 +75,9 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
     setEmojiOpen(false)
     // send via socketio emit
     socket.emit("user_message",{ ...message, atSend:Date.now(), replyMessage: selectedMessage })
+    // add this message on local 
+    dispatch(pushMessage({ ...message, atSend:Date.now(), replyMessage: selectedMessage }))
+    dispatch(saveChats())
     // nessesary work
     setMessage(messageTemplate) // set default message
     setSelectedMessage(null) //clear selected reply message

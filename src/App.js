@@ -78,7 +78,7 @@ export default function App() {
         if (!forMe) return
         dispatch(pushMessage(message))
         dispatch(saveChats())
-        if (sender !== my_Id) {
+        if (sender !== my_Id && nootifySound ) {
           Notify.play()
         }
       })
