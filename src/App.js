@@ -38,7 +38,7 @@ export default function App() {
   }, [chatsList.chats])
 
 
-  
+
 
   useEffect(() => {
     if (my_Id) {
@@ -78,8 +78,10 @@ export default function App() {
         if (!forMe) return
         dispatch(pushMessage(message))
         dispatch(saveChats())
-        if (sender !== my_Id && nootifySound ) {
-          Notify.play()
+        if (sender !== my_Id && nootifySound) {
+          try {
+            Notify.play()
+          } catch (err) { }
         }
       })
 
@@ -101,7 +103,9 @@ export default function App() {
           dispatch(saveChats())
         }
         if (sender !== my_Id) {
-          Notify.play()
+          try {
+            Notify.play()
+          } catch (err) { }
         }
       })
 
