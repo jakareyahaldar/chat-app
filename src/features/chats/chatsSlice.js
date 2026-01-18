@@ -88,6 +88,7 @@ export const chatsSlice = createSlice({
             prev_messages.push(newMessage) // push new
             return { ...chat, messages: prev_messages }
           }
+          return chat
         } else {
           return chat
         }
