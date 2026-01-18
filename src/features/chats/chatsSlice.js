@@ -83,8 +83,11 @@ export const chatsSlice = createSlice({
       state.chats = state.chats.map((chat) => {
         if (chat.chat_id === newMessage.chat_id) {
           const prev_messages = chat.messages ? chat.messages : []
-          prev_messages.push(newMessage) // push new
-          return { ...chat, messages: prev_messages }
+          const isalrady = prev_messages.findIndex(m => m.message_id === newMessage.message_id)
+          if (isalrady == -1) {
+            prev_messages.push(newMessage) // push new
+            return { ...chat, messages: prev_messages }
+          }
         } else {
           return chat
         }
