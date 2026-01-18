@@ -8,7 +8,7 @@ import PrivetComponent from "./Pages/PrivetComponent.js"
 import Users from "./Pages/Users/Users.js"
 import Menu from "./Pages/Menu/Menu.js"
 import Profile from "./Pages/Menu/Profile/Profile.js"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import useParsedCookie from "./hooks/useParsedCookie.js"
 import { useSelector, useDispatch } from "react-redux"
 import { setAUserOnline, setAUserOffline, GetChatList, pushMessage, handleReact, UndoReact, setTypingState, saveChats, messageSeen } from "./features/chats/chatsSlice.js"
@@ -24,7 +24,7 @@ export default function App() {
   const [showWaitAlert, setShowWaitAlert] = useState(false)
   const myCookie = useParsedCookie()
   const my_Id = myCookie?._id
-  const Notify = new Audio(nootifySound)
+  const Notify = useMemo(() => new Audio(nootifySound), [])
 
   const chatsList = useSelector((state) => state.chats)
   const want_reload = chatsList.want_reload
@@ -35,7 +35,7 @@ export default function App() {
       const allUserIds = chatsList.chats.map(c => c.user_id)
       socket.emit("checkWhosOnline", { host: my_Id, users: allUserIds })
     }
-  }, [chatsList.chats])
+  }, [chatsList.chats, my_Id])
 
 
 
@@ -52,7 +52,7 @@ export default function App() {
       // Getting all chats
       dispatch(GetChatList(my_Id))
     }
-  }, [want_reload, my_Id, dispatch])
+  }, [want_reload, my_Id, dispatch, URL])
 
 
   useEffect(() => {
@@ -139,7 +139,10 @@ export default function App() {
 
     } // end if(my_Id)
 
-  }, [my_Id, dispatch])
+    return () => {
+      clearInterval(tt)
+    }
+  }, [my_Id, dispatch, Notify, chatsList.isLodding])
 
   return (
     <div className="h-dvh md:w-[500px] md:mx-auto bg-black text-white">

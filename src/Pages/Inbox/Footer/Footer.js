@@ -6,77 +6,77 @@ import EmojiBox from "../../../CastomElements/EmojiBox.js"
 import { saveChats, pushMessage } from "../../../features/chats/chatsSlice.js"
 import { useDispatch } from "react-redux"
 
-export default function Footer({ chat_id, members, my_id, selectedMessagesState, BottomPaddState }){
+export default function Footer({ chat_id, members, my_id, selectedMessagesState, BottomPaddState }) {
   // Ref Elements
   const InputEl = useRef({})
-  const replyBox = useRef({clientHeight:10})
+  const replyBox = useRef({ clientHeight: 10 })
   const footerContainar = useRef({})
   const replyPragraph = useRef({})
   const dispatch = useDispatch()
-  
-  const helper = useSelector((state)=> state.helper)
-  const [showAlert,setShowAlert] = useState(false)
-  const [messagesBottomPadding,setMessageBottomPadd] = BottomPaddState
+
+  const helper = useSelector((state) => state.helper)
+  const [showAlert, setShowAlert] = useState(false)
+  const [messagesBottomPadding, setMessageBottomPadd] = BottomPaddState
   const [selectedMessage, setSelectedMessage] = selectedMessagesState
-  const [emojiOpen,setEmojiOpen] = useState(false)
-  
+  const [emojiOpen, setEmojiOpen] = useState(false)
+
   // message template
   const messageTemplate = {
     message_id: window.crypto.randomUUID(),
     sender: my_id,
     receiver_id: members,
     chat_id,
-    text:"",
-    seen:false,
+    text: "",
+    seen: false,
     react: []
   }
-  const [ message,setMessage ] = useState(messageTemplate) // message state
-  const [isTyping,setIsTyping] = useState(false) // typing status truck
-  const [TimeoutId,setTId] = useState(null) // For tracking Typing end Event
-  
-  
+  const [message, setMessage] = useState(messageTemplate) // message state
+  const [isTyping, setIsTyping] = useState(false) // typing status truck
+  const [TimeoutId, setTId] = useState(null) // For tracking Typing end Event
+
+
   // Send Typing status on other side
-  useEffect(()=>{
-    if(TimeoutId){
-      socket.emit("typing",{
+  useEffect(() => {
+    if (TimeoutId) {
+      socket.emit("typing", {
         typing: isTyping,
         chat_id,
         sender: my_id,
         receiver: members,
       })
     }
-  },[isTyping])
-  
-  useEffect(()=>{
+  }, [isTyping, TimeoutId, chat_id, members, my_id])
+
+  useEffect(() => {
     // This code using for adjust Reply text width
-    if(replyPragraph.current.style){
+    if (replyPragraph.current.style) {
       replyPragraph.current.style.width = Math.floor(footerContainar.current.clientWidth / 1.5) + "px"
     }
-  },[])
-  
-  useEffect(()=>{
+  }, [])
+
+  useEffect(() => {
     // This code using for adjust padding on messages list when select a reply message
     const ReplyMsgBoxHeight = replyBox?.current?.clientHeight
-    setMessageBottomPadd( (ReplyMsgBoxHeight || 0 ) + 10 + "px")
-  },[messagesBottomPadding,selectedMessage])
-  
-  
+    setMessageBottomPadd((ReplyMsgBoxHeight || 0) + 10 + "px")
+  }, [messagesBottomPadding, selectedMessage, setMessageBottomPadd])
+
+
   // Sending Message
-  function sendMessage(){
+  function sendMessage() {
     // if server not connected give an alert
-    if(!helper.socketIo_connected){
+    if (!helper.socketIo_connected) {
       setShowAlert(true)
       return
     }
     // if text is empty cant send sms
-    if(message.text === "") return
-    
+    if (message.text === "") return
+
     setIsTyping(false)
     setEmojiOpen(false)
     // send via socketio emit
-    socket.emit("user_message",{ ...message, atSend:Date.now(), replyMessage: selectedMessage })
+    socket.emit("user_message", { ...message, atSend: Date.now(), replyMessage: selectedMessage })
     // add this message on local 
-    dispatch(pushMessage({ ...message, atSend:Date.now(), replyMessage: selectedMessage }))
+    dispatch(pushMessage({ ...message, atSend: Date.now(), replyMessage: selectedMessage }))
     dispatch(saveChats())
     // nessesary work
     setMessage(messageTemplate) // set default message
@@ -85,82 +85,82 @@ export default function Footer({ chat_id, members, my_id, selectedMessagesState,
     InputEl.current.style.height = "40px" // go default heaight of input 
   }
 
-  
-  return(
+
+  return (
     <>
-      <EmojiBox 
-        setEmoji={(code)=>setMessage((prev)=>({...prev,text: prev.text + String.fromCodePoint(code)}))} 
+      <EmojiBox
+        setEmoji={(code) => setMessage((prev) => ({ ...prev, text: prev.text + String.fromCodePoint(code) }))}
         isOpen={emojiOpen}
         tailwind="relative z-[100] mb-[100px]"
-        onClose={()=>setEmojiOpen(false)}
+        onClose={() => setEmojiOpen(false)}
       />
       {/*Alert Server Disconnected*/}
-      <MyAlert 
+      <MyAlert
         title="Error!"
         text="Server Disconnected"
         show={showAlert}
         fixed={true}
         yes_btn_text="Ok"
         no_btn_text="Cancel"
-        onClose={()=>setShowAlert(false)}
-        onConfrom={()=>setShowAlert(false)}
+        onClose={() => setShowAlert(false)}
+        onConfrom={() => setShowAlert(false)}
       />
-      
+
       {/*Main Jsx*/}
       <div ref={footerContainar} className="w-full shrink-0 flex items-center justify-between p-3 px-5 relative">
-      {/*Options*/}
-      <div className="text-2xl flex gap-2">
-        <i className="fa-solid fa-image"></i>
-        <i  className="fa-solid fa-microphone"></i>
-        <i onClick={()=>setEmojiOpen(!emojiOpen)} className="fas fa-grin"></i>
-      </div>
-      {/*Reply selected Messages*/}
-      {
-        selectedMessage !== null && (
-        <div ref={replyBox} className="bg-black w-full flex justify-between items-center px-5 absolute left-0 -translate-y-[100%]">
-        <div>
-          <p className="text-sm text-[#ddc2c2]">Replying to</p>
-          <p ref={replyPragraph} className=" ml-1 max-w-[300px] break-words">{selectedMessage.text}</p>
+        {/*Options*/}
+        <div className="text-2xl flex gap-2">
+          <i className="fa-solid fa-image"></i>
+          <i className="fa-solid fa-microphone"></i>
+          <i onClick={() => setEmojiOpen(!emojiOpen)} className="fas fa-grin"></i>
         </div>
-        <i
-          onClick={()=>setSelectedMessage(null)}
-          className="text-white shrink-0 fas fa-undo"></i>
+        {/*Reply selected Messages*/}
+        {
+          selectedMessage !== null && (
+            <div ref={replyBox} className="bg-black w-full flex justify-between items-center px-5 absolute left-0 -translate-y-[100%]">
+              <div>
+                <p className="text-sm text-[#ddc2c2]">Replying to</p>
+                <p ref={replyPragraph} className=" ml-1 max-w-[300px] break-words">{selectedMessage.text}</p>
+              </div>
+              <i
+                onClick={() => setSelectedMessage(null)}
+                className="text-white shrink-0 fas fa-undo"></i>
+            </div>
+          )
+        }
+        {/*Type message*/}
+        <div className="flex gap-3">
+          <textarea
+            ref={InputEl}
+            value={message.text}
+            rows="1"
+            onKeyDown={(e) => {
+              const enter = e.key === "Enter"
+              if (enter) {
+                sendMessage()
+                e.preventDefault()
+              }
+            }}
+            onChange={(e) => {
+              // Typing State set
+              setIsTyping(true)
+              clearInterval(TimeoutId)
+              setTId(setTimeout(() => {
+                setIsTyping(false)
+              }, 5000))
+
+              // set textarea height
+              e.target.style.height = e.target.scrollHeight + "px";
+              // Set message
+              setMessage((prev) => ({ ...prev, text: e.target.value }))
+            }} className="bg-[#192a2a] rounded-2xl px-3 py-2 py-1 outline-none"
+            type="text" placeholder="Message"></textarea>
+
+          <button type="submit">
+            <i onClick={sendMessage} className="text-2xl fa fa-paper-plane" aria-hidden="true"></i>
+          </button>
+        </div>
       </div>
-        )
-      }
-      {/*Type message*/}
-      <div className="flex gap-3">
-        <textarea
-        ref={InputEl}
-        value={message.text}
-        rows="1"
-        onKeyDown={(e)=>{
-          const enter = e.key === "Enter"
-          if(enter){
-            sendMessage()
-            e.preventDefault()
-          }
-        }}
-        onChange={(e)=>{
-          // Typing State set
-          setIsTyping(true)
-          clearInterval(TimeoutId)
-          setTId(setTimeout(()=>{
-            setIsTyping(false)
-          },5000))
-          
-          // set textarea height
-          e.target.style.height = e.target.scrollHeight + "px";
-          // Set message
-          setMessage((prev)=>({...prev, text: e.target.value}))
-        }} className="bg-[#192a2a] rounded-2xl px-3 py-2 py-1 outline-none" 
-        type="text" placeholder="Message"></textarea>
-        
-        <button type="submit">
-          <i onClick={sendMessage} className="text-2xl fa fa-paper-plane" aria-hidden="true"></i>
-        </button>
-      </div>
-    </div>
     </>
-    )
+  )
 }
