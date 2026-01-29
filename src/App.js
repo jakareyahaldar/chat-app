@@ -18,6 +18,7 @@ import nootifySound from "./utilities/notify.mp3"
 import Info from './Pages/Inbox/Header/Info.js';
 import NameChange from './Pages/Menu/Profile/Sections/NameChange.js';
 import PasswordChange from './Pages/Menu/Profile/Sections/ChangePassword.js';
+import ChangeEmailOrPhone from './Pages/Menu/Profile/Sections/ChangeEmailOrPhone.js';
 
 export let socket = {}
 
@@ -177,6 +178,7 @@ export default function App() {
             {/* Menu  */}
             <Route path='/change-name' element={<NameChange />} />
             <Route path='/password/:id' element={<PasswordChange />} />
+            <Route path='/email/:id' element={<ChangeEmailOrPhone />} />
 
           </Route>
           <Route path="/login" element={<Login />} />
