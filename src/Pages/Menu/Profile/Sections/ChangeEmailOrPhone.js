@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useCookies } from "react-cookie"
 import { useDispatch } from "react-redux"
 import {want_reload} from "../../../../features/chats/chatsSlice"
+import MyAlert from "../../../../CastomElements/MyAlert"
 
 export default function PasswordChange() {
 
@@ -11,6 +12,8 @@ export default function PasswordChange() {
     const Navigate = useNavigate()
     const api = process.env.REACT_APP_API_URL
     const dispatch = useDispatch()
+
+    const [ShowAlert,setShowAlert] = useState({})
 
 
     const [,setCookie] = useCookies()
@@ -46,7 +49,7 @@ export default function PasswordChange() {
         
         // Check Empty field
         if ((Object.values(dataObj).length) < 3) {
-            alert("Please fill all field.")
+            setShowAlert({text:"Please fill all field.",show:true})
             return
         }
 
@@ -56,7 +59,7 @@ export default function PasswordChange() {
         const IsEmail = emailREgEx.test(dataObj.newE_P) ? true : phoneREgEx.test(dataObj.newE_P) ? false : null
         
         if(IsEmail === null) {
-            alert("Please enter a valid email or numbar.")
+            setShowAlert({text:"Please enter a valid email or numbar.",show:true})
             return
         }
         
@@ -76,14 +79,14 @@ export default function PasswordChange() {
             const res = await req.json()
             submitBtn.current.innerText = "Save Change"
             if(req.ok){
-                alert("Sucess!")
+                setShowAlert({text:"Success",show:true})
                 setCookie("jessengar_auth",res.token,{maxAge:60*60*24*360})
                 dispatch(want_reload())
             }else{
-                alert(res.error)
+                setShowAlert({text:res.error,show:true})
             }
         }catch(err){
-            alert(err.message)
+            setShowAlert({text:err.message,show:true})
         }
 
 
@@ -111,6 +114,21 @@ export default function PasswordChange() {
 
     return (
         <>
+
+<MyAlert
+                    show={ShowAlert?.show}
+                    onClose={() => {
+                      setShowAlert({})
+                    }}
+                    onConfrom={() => {
+                      setShowAlert({})
+                    }}
+                    fixed={true}
+                    title="Alert."
+                    text={ShowAlert?.text}
+                  />
+
+
             {/* NAVIGATION BAR */}
             <TopBar text="Back" path="/menu/profile" />
             <div className="w-full h-full top-0 left-0 p-10">

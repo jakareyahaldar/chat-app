@@ -1,12 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import TopBar from "../../../../CastomElements/TopBar";
 import { useRef, useState } from "react";
+import MyAlert from "../../../../CastomElements/MyAlert"
 
 export default function PasswordChange() {
 
     const { id } = useParams()
     const Navigate = useNavigate()
     const api = process.env.REACT_APP_API_URL
+
+    const [ShowAlert,setShowAlert] = useState({})
 
 
     // Element refarence 
@@ -30,17 +33,17 @@ export default function PasswordChange() {
         // Check password validity 
         // Empty check 
         if (current_password === "" || newPassword === "") {
-            alert('Empty field!')
+           setShowAlert({text:'Empty field!',show:true})
             return
         }
         // same check 
         if (current_password === newPassword) {
-            alert('Both are same please try again !')
+            setShowAlert({text:"Both are same please try again !",show:true})
             return
         }
         // lenth check 
         if (newPassword.length < 6) {
-            alert('password minimam 6 charectar !')
+            setShowAlert({text:'password minimam 6 charectar !',show:true})
             return
         }
 
@@ -65,18 +68,18 @@ export default function PasswordChange() {
             submitBtn.current.innerText = "..."
             const request = await fetch(api + "/users/password", option)
             if (!request.ok) {
-                alert("server error!")
+                setShowAlert({text:"Server Error",show:true})
                 return
             }
             submitBtn.current.innerText = "Save Changes"
             const response = await request.json()
             if (response.state) {
-                alert("Success")
+                setShowAlert({text:"Success",show:true})
                 Navigate('/')
             }
             if (response.error) alert(response.error)
         } catch (err) {
-            alert(err.message)
+            setShowAlert({text:err.message,show:true})
         }
     }
 
@@ -99,6 +102,21 @@ export default function PasswordChange() {
 
     return (
         <>
+
+        <MyAlert
+                    show={ShowAlert?.show}
+                    onClose={() => {
+                      setShowAlert({})
+                    }}
+                    onConfrom={() => {
+                      setShowAlert({})
+                    }}
+                    fixed={true}
+                    title="Alert."
+                    text={ShowAlert?.text}
+                  />
+
+
             {/* NAVIGATION BAR */}
             <TopBar text="Back" path="/menu/profile" />
             <div className="w-full h-full top-0 left-0 p-10">

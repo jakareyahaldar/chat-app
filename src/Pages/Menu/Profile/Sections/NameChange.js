@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useDispatch } from "react-redux"
 import { want_reload } from "../../../../features/chats/chatsSlice";
 import { useCookies } from "react-cookie";
+import MyAlert from "../../../../CastomElements/MyAlert"
 
 export default function NameChange() {
 
@@ -12,6 +13,8 @@ export default function NameChange() {
     const Navigate = useNavigate()
     const api = process.env.REACT_APP_API_URL
     const [, setCookie] = useCookies()
+
+    const [ShowAlert, setShowAlert] = useState({})
 
 
     // Element refarence 
@@ -42,7 +45,7 @@ export default function NameChange() {
 
         // If not any chenge then exict and alert
         if (!(Object.keys(ChangedData)).length) {
-            alert("You not change any field!")
+            setShowAlert({ text: "You not change any field!", show: true })
             return
         }
 
@@ -71,10 +74,10 @@ export default function NameChange() {
                 dispatch(want_reload())
                 Navigate('/menu/profile')
             } else if (response.error) {
-                alert(response.error)
+                setShowAlert({ text: response.error, show: true })
             }
         } catch (err) {
-            alert(err.message)
+            setShowAlert({ text: err.message, show: true })
         }
     }
 
@@ -97,6 +100,20 @@ export default function NameChange() {
 
     return (
         <>
+
+            <MyAlert
+                show={ShowAlert?.show}
+                onClose={() => {
+                    setShowAlert({})
+                }}
+                onConfrom={() => {
+                    setShowAlert({})
+                }}
+                fixed={true}
+                title="Alert."
+                text={ShowAlert?.text}
+            />
+
             {/* NAVIGATION BAR */}
             <TopBar text="Back" path="/menu/profile" />
             <div className="w-full h-full top-0 left-0 p-10">
