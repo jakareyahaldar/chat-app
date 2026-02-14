@@ -19,6 +19,7 @@ import Info from './Pages/Inbox/Header/Info.js';
 import NameChange from './Pages/Menu/Profile/Sections/NameChange.js';
 import PasswordChange from './Pages/Menu/Profile/Sections/ChangePassword.js';
 import ChangeEmailOrPhone from './Pages/Menu/Profile/Sections/ChangeEmailOrPhone.js';
+import { getUserData } from './features/user/userSlice.js';
 
 export let socket = {}
 
@@ -32,7 +33,6 @@ export default function App() {
 
   const chatsList = useSelector((state) => state.chats)
   const want_reload = chatsList.want_reload
-
 
   useEffect(() => {
     if (chatsList.chats.length) {
@@ -55,6 +55,7 @@ export default function App() {
 
       // Getting all chats
       dispatch(GetChatList(my_Id))
+      dispatch(getUserData(my_Id))
     }
   }, [want_reload, my_Id, dispatch, URL])
 

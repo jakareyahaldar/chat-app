@@ -6,7 +6,16 @@ export default function ChatList() {
 
 
   const chatsList = useSelector((state) => state.chats)
-  const chats = chatsList.chats
+  const userData = useSelector((state) => state.user)
+  const user = userData?.data?.data
+  let chats = chatsList.chats
+
+  if(chats.length && user?.blocked_accounts){
+    chats = chats.filter(ch => !user.blocked_accounts.includes(ch.user_id) )
+  }
+  if(chats.length && user?.blocked_by){
+    chats = chats.filter(ch => !user.blocked_by.includes(ch.user_id) )
+  }
 
 
   // Extract Last messaage
@@ -36,6 +45,7 @@ export default function ChatList() {
       </div>
     )
   }
+
 
   return (
     <div className="grid gap-2 p-3 relative max-h-fit overflow-scroll">

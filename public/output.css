@@ -689,6 +689,10 @@ video {
   margin-left: auto;
 }
 
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -703,6 +707,10 @@ video {
 
 .mt-5 {
   margin-top: 1.25rem;
+}
+
+.mt-7 {
+  margin-top: 1.75rem;
 }
 
 .block {
@@ -791,12 +799,16 @@ video {
   max-height: fit-content;
 }
 
-.w-0 {
-  width: 0px;
+.min-h-full {
+  min-height: 100%;
 }
 
-.w-2\/3 {
-  width: 66.666667%;
+.min-h-dvh {
+  min-height: 100dvh;
+}
+
+.w-0 {
+  width: 0px;
 }
 
 .w-4\/5 {
@@ -866,14 +878,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-4 {
-  width: 1rem;
-}
-
-.w-3\/4 {
-  width: 75%;
 }
 
 .max-w-\[280px\] {
@@ -1094,6 +1098,10 @@ video {
   background-color: rgb(148 163 184 / var(--tw-bg-opacity, 1));
 }
 
+.bg-slate-500\/10 {
+  background-color: rgb(100 116 139 / 0.1);
+}
+
 .bg-slate-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity, 1));
@@ -1125,6 +1133,11 @@ video {
 
 .p-5 {
   padding: 1.25rem;
+}
+
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
 }
 
 .px-2 {
@@ -1245,9 +1258,9 @@ video {
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
 }
 
-.text-gray-200 {
+.text-slate-300 {
   --tw-text-opacity: 1;
-  color: rgb(229 231 235 / var(--tw-text-opacity, 1));
+  color: rgb(203 213 225 / var(--tw-text-opacity, 1));
 }
 
 .text-white {
@@ -1326,14 +1339,14 @@ video {
   background-color: rgb(253 230 138 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-blue-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-red-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity, 1));
-}
-
-.hover\:bg-red-900:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(127 29 29 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-white:hover {
@@ -1361,15 +1374,15 @@ video {
     margin-right: auto;
   }
 
+  .md\:w-2\/3 {
+    width: 66.666667%;
+  }
+
   .md\:w-\[300px\] {
     width: 300px;
   }
 
   .md\:w-\[500px\] {
     width: 500px;
-  }
-
-  .md\:w-2\/3 {
-    width: 66.666667%;
   }
 }
